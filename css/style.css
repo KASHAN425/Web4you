@@ -1,0 +1,44 @@
+:root {
+  --bg: #f4f7fb;
+  --text: #1d2433;
+  --card: #ffffff;
+  --accent: #4f46e5;
+  --muted: #6c7590;
+}
+
+body.dark-mode {
+  --bg: #0d1224;
+  --text: #f5f7ff;
+  --card: #151c35;
+  --accent: #60a5fa;
+  --muted: #a5b4d4;
+}
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  transition: background 0.3s ease, color 0.3s ease;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+
+.navbar, .card, .footer, .offcanvas, .table {
+  background-color: var(--card) !important;
+  color: var(--text);
+}
+
+.hero {
+  min-height: 75vh;
+  display: grid;
+  place-items: center;
+  background: linear-gradient(120deg, rgba(79,70,229,0.2), rgba(59,130,246,0.1));
+  border-radius: 20px;
+}
+
+.hero h1 { font-weight: 800; }
+.sticky-top { backdrop-filter: blur(8px); }
+.card { border: 1px solid rgba(127,127,127,0.15); border-radius: 16px; }
+.price-tag { color: var(--accent); font-weight: 700; }
+.section-title { font-weight: 700; margin-bottom: 1.2rem; }
+.footer { padding: 2.5rem 0; border-top: 1px solid rgba(127,127,127,0.2); }
+.fade-up { animation: fadeUp 0.8s ease both; }
+@keyframes fadeUp { from { opacity: 0; transform: translateY(16px);} to {opacity: 1; transform: translateY(0);} }
