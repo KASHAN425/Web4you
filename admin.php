@@ -1,0 +1,16 @@
+<?php require_once __DIR__ . '/config.php'; ?>
+<!doctype html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Admin Dashboard</title><link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"><link rel="stylesheet" href="css/style.css"></head>
+<body><div class="container py-5">
+<?php if (!isset($_SESSION['admin_id'])): ?>
+<h1>Admin Login</h1><p class="text-muted">Username: <b>kashan</b> | Password: <b>kashanabbabb</b> (seed via SQL below)</p>
+<form id="adminLogin" class="card p-4" style="max-width:500px;"><input type="hidden" name="action" value="admin_login"><input name="username" class="form-control mb-3" placeholder="Username" required><input name="password" type="password" class="form-control mb-3" placeholder="Password" required><button class="btn btn-primary">Login</button></form><div id="adminMsg"></div>
+<?php else: ?>
+<div class="d-flex justify-content-between"><h1>Admin Dashboard</h1><button onclick="logout()" class="btn btn-outline-danger">Logout</button></div>
+<div class="row g-3 my-3"><div class="col-md-3"><div class="card p-3"><h5>Users</h5><h3 id="s_users">0</h3></div></div><div class="col-md-3"><div class="card p-3"><h5>Orders</h5><h3 id="s_orders">0</h3></div></div><div class="col-md-3"><div class="card p-3"><h5>Sales</h5><h3 id="s_sales">0</h3></div></div><div class="col-md-3"><div class="card p-3"><h5>Products</h5><h3 id="s_products">0</h3></div></div></div>
+<form id="addProduct" class="card p-4 mb-4"><h4>Add Product</h4><input type="hidden" name="action" value="add_product"><div class="row g-2"><div class="col-md-4"><input name="title" class="form-control" placeholder="Title" required></div><div class="col-md-4"><input name="price" type="number" class="form-control" placeholder="Price" required></div><div class="col-md-4"><input name="category_id" type="number" class="form-control" placeholder="Category ID" required></div><div class="col-md-6"><input name="image" class="form-control" placeholder="Image path"></div><div class="col-md-6"><input name="demo_link" class="form-control" placeholder="Demo link"></div><div class="col-12"><textarea name="description" class="form-control" placeholder="Description"></textarea></div></div><button class="btn btn-primary mt-3">Add Product</button></form><div id="adminOut"></div>
+<?php endif; ?>
+</div><script src="https://code.jquery.com/jquery-3.7.1.min.js"></script><script src="js/app.js"></script><script>
+$('#adminLogin').on('submit',function(e){e.preventDefault();$.post('includes/auth.php',$(this).serialize(),()=>location.reload(),'json').fail(x=>$('#adminMsg').html(`<div class='alert alert-danger mt-2'>${x.responseJSON?.message||'Login failed'}</div>`));});
+$('#addProduct').on('submit',function(e){e.preventDefault();$.post('includes/admin_actions.php',$(this).serialize(),r=>$('#adminOut').html(`<div class='alert alert-success'>${r.message}</div>`),'json');});
+$.getJSON('includes/admin_actions.php',r=>{if(r.success){$('#s_users').text(r.stats.users);$('#s_orders').text(r.stats.orders);$('#s_sales').text(r.stats.sales);$('#s_products').text(r.stats.products);}});
+</script></body></html>
